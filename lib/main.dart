@@ -38,8 +38,7 @@ void callBackDispatcher(){
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Workmanager().cancelAll();
-
+  
   await SharedPrefRepository.instance.init();
   await MainRepository.instance.initDictionary();
   var theme = SharedPrefRepository.instance.getTheme();
