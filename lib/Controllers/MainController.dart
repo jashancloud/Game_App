@@ -25,7 +25,7 @@ class MainController extends GetxController {
   var repository = MainRepository.instance;
 
   var currentWord = "";
-  var currentWordMeaning = "";
+  var currentWordMeaning = "".obs;
   var currentGameModel = Rx<GameModel?>(null);
 
   @override
@@ -61,17 +61,17 @@ class MainController extends GetxController {
               );
             });
             currentWord=model.secretWord;
-            currentWordMeaning=model.meaning;
+            currentWordMeaning.value=model.meaning;
             changeGridListWithResultList(gameModel.board);
           } else {
             level.value = currentGameModel.value!.level;
             currentWord = repository.generateSecretWord(levelNumber: level.value);
-            currentWordMeaning = repository.getDescription(currentWord);
+            currentWordMeaning.value = repository.getDescription(currentWord);
           }
         } else {
           if (gameModel.mode == gameState.value) {
             currentWord = gameModel.secretWord;
-            currentWordMeaning = gameModel.meaning;
+            currentWordMeaning.value = gameModel.meaning;
 
             if (gameState.value == gameModel.mode) {
               level.value = gameModel.level;
@@ -87,7 +87,7 @@ class MainController extends GetxController {
         } else {
           currentWord = repository.generateSecretWord(levelNumber: level.value);
         }
-        currentWordMeaning = repository.getDescription(currentWord);
+        currentWordMeaning.value = repository.getDescription(currentWord);
       }
       print(currentWord);
     }catch(e){
@@ -153,7 +153,7 @@ class MainController extends GetxController {
     try{
       level.value = level.value + 1;
       currentWord = repository.generateSecretWord(levelNumber: level.value);
-      currentWordMeaning = repository.getDescription(currentWord);
+      currentWordMeaning.value = repository.getDescription(currentWord);
       enterWord.value = "";
       attempt.value = 0;
       for (int i = 0; i < gridItems.length; ++i) {
@@ -183,7 +183,7 @@ class MainController extends GetxController {
             changeGridListWithResultList(resultWord);
             var gameModel = GameModel(
                 secretWord: currentWord,
-                meaning: currentWordMeaning,
+                meaning: currentWordMeaning.value,
                 board: getMainListWithoutNull(),
                 isWin: true,
                 isComplete: true,
@@ -196,7 +196,7 @@ class MainController extends GetxController {
 
             var model = WordModel(
                 secretWord: currentWord,
-                meaning: currentWordMeaning,
+                meaning: currentWordMeaning.value,
                 isWin: true,level: level.value);
 
             if (gameState.value == AppConstants.dailyGame) {
@@ -260,7 +260,7 @@ class MainController extends GetxController {
 
             var gameModel = GameModel(
                 secretWord: currentWord,
-                meaning: currentWordMeaning,
+                meaning: currentWordMeaning.value,
                 board: getMainListWithoutNull(),
                 isWin: false,
                 attempt: attempt.value,
@@ -275,7 +275,7 @@ class MainController extends GetxController {
               // You Lose
               var model = WordModel(
                   secretWord: currentWord,
-                  meaning: currentWordMeaning,
+                  meaning: currentWordMeaning.value,
                   isWin: false,level: level.value);
 
               if (gameState.value == AppConstants.dailyGame) {

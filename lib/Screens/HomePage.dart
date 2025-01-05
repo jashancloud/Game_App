@@ -63,7 +63,7 @@ class GameBody extends GetView<MainController> {
         child: Column(
           children: [
             Obx((){
-              var meaning = controller.currentWordMeaning;
+              var meaning = controller.currentWordMeaning.value;
               var themeMode = controller.themeMode.value;
               var cellColor = LetterStatus.notInWord.cellColor(themeMode, context);
               var textColor = LetterStatus.notInWord.textColor(themeMode, context);
