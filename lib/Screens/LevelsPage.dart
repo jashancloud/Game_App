@@ -1,6 +1,5 @@
 import 'package:game_app/Constants/AppConstants.dart';
 import 'package:game_app/Controllers/LevelsPage.dart';
-import 'package:game_app/Controllers/MainController.dart';
 import 'package:game_app/Models/WordModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

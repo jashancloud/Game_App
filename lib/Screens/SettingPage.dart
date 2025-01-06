@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:game_app/Constants/AppConstants.dart';
-import 'package:game_app/Controllers/MainController.dart';
 import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:get/get.dart';
 
