@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:game_app/Bindings/AppBindings.dart';
 import 'package:game_app/Constants/AppConstants.dart';
 import 'package:game_app/Constants/MyTheme.dart';
-import 'package:game_app/Controllers/MainController.dart';
 import 'package:game_app/Repositories/MainRepository.dart';
 import 'package:game_app/Repositories/SharedPrefRepository.dart';
 import 'package:game_app/Screens/HomePage.dart';
@@ -91,9 +91,7 @@ class MyApp extends StatelessWidget {
       themeMode: themeMode,
       initialRoute:
           (isFirstEnter) ? AppConstants.tutorialPage : AppConstants.homePage,
-      initialBinding: BindingsBuilder(() {
-        Get.put(MainController());
-      }),
+      initialBinding: AppBindings(),
       getPages: [
         GetPage(name: AppConstants.homePage, page: () => const HomePage()),
         GetPage(name: AppConstants.tutorialPage, page: () => const Tutorial()),

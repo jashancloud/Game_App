@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/AppConstants.dart';
 import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:get/get.dart';
 
-class SettingPage extends GetView<MainController> {
+class SettingPage extends GetView<ThemeController> {
   const SettingPage({super.key});
 
   static const themes=<String>[
@@ -14,7 +15,6 @@ class SettingPage extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -49,7 +49,7 @@ class SettingPage extends GetView<MainController> {
   }
 }
 
-class MyBottomSheet extends GetView<MainController> {
+class MyBottomSheet extends GetView<ThemeController> {
   final List<String> themes;
   const MyBottomSheet({super.key,required this.themes});
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:game_app/Constants/MyColors.dart';
 import 'package:game_app/Constants/MyTheme.dart';
 import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:game_app/Models/letter_info.dart';
 import 'package:get/get.dart';
 
@@ -33,7 +34,7 @@ class MyGridView extends GetView<MainController> {
   }
 }
 
-class MyGridTile extends GetView<MainController> {
+class MyGridTile extends GetView<ThemeController> {
   final LetterInfo? letter;
   const MyGridTile({super.key,required this.letter});
 

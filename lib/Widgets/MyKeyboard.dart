@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/AppConstants.dart';
 import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:game_app/Models/letter_info.dart';
 import 'package:get/get.dart';
 
@@ -56,8 +57,9 @@ class EnterKey extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
+    var themeController = Get.find<ThemeController>();
     return Obx((){
-      var themeMode = controller.themeMode.value;
+      var themeMode = themeController.themeMode.value;
       return Padding(
         padding: const EdgeInsets.only(right: 3),
         child: SizedBox(
@@ -92,8 +94,9 @@ class DeleteKey extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
+    var themeController = Get.find<ThemeController>();
     return Obx((){
-      var themeMode = controller.themeMode.value;
+      var themeMode = themeController.themeMode.value;
       return Padding(
         padding: const EdgeInsets.only(right: 3),
         child: SizedBox(
@@ -135,8 +138,9 @@ class KeyboardKey extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
+    var themeController = Get.find<ThemeController>();
    return Obx((){
-     var themeMode = controller.themeMode.value;
+     var themeMode = themeController.themeMode.value;
      return Padding(
        padding: const EdgeInsets.symmetric(horizontal: 3),
        child: SizedBox(

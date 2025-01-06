@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/AppConstants.dart';
+import 'package:game_app/Controllers/LevelsPage.dart';
+import 'package:game_app/Controllers/StatisticController.dart';
 import 'package:game_app/Models/GameModel.dart';
-import 'package:game_app/Models/StatisticModel.dart';
 import 'package:game_app/Models/WordModel.dart';
 import 'package:game_app/Repositories/MainRepository.dart';
 import 'package:game_app/Repositories/SharedPrefRepository.dart';
@@ -19,7 +18,7 @@ class MainController extends GetxController {
   var attempt = 0.obs;
 
   var gridItems = List<LetterInfo?>.generate(30, (index) => null).obs;
-  var themeMode=ThemeMode.system.obs;
+
 
   var sharedPrefRepository = SharedPrefRepository.instance;
   var repository = MainRepository.instance;
@@ -27,16 +26,18 @@ class MainController extends GetxController {
   var currentWord = "";
   var currentWordMeaning = "".obs;
   var currentGameModel = Rx<GameModel?>(null);
+  var statisticController = Get.find<StatisticController>();
+  var levelsController = Get.find<LevelsController>();
 
   @override
   void onInit() {
     getPrefValues();
-    getTheme();
     super.onInit();
   }
 
   //Getting Saved Board from Shared Pref
   void getPrefValues() {
+    // sharedPrefRepository.clearBoard(mode: 0);
     // sharedPrefRepository.clearSharedPref();
 
     try{
@@ -168,6 +169,7 @@ class MainController extends GetxController {
 
   //When Press Enter
   Future<void> pressEnter() async {
+
     try{
       if (enterWord.value.length == 5) {
         var word = enterWord.value;
@@ -200,9 +202,9 @@ class MainController extends GetxController {
                 isWin: true,level: level.value);
 
             if (gameState.value == AppConstants.dailyGame) {
-              setStatistics(isWin: true, attempt: attempt.value);
+              statisticController.setStatistics(isWin: true, attempt: attempt.value);
             }else{
-              unawaited(sharedPrefRepository.setLevels(model: model));
+              unawaited(levelsController.setLevel(model: model));
             }
 
 
@@ -279,9 +281,9 @@ class MainController extends GetxController {
                   isWin: false,level: level.value);
 
               if (gameState.value == AppConstants.dailyGame) {
-                setStatistics(isWin: false, attempt: attempt.value);
+                statisticController.setStatistics(isWin: false, attempt: attempt.value);
               }else{
-                unawaited(sharedPrefRepository.setLevels(model: model));
+                unawaited(levelsController.setLevel(model: model));
               }
 
               await AppConstants.showGameResultDialog(
@@ -345,113 +347,5 @@ class MainController extends GetxController {
     return temp;
   }
 
-  void setStatistics({required bool isWin, required int attempt,}) {
-    try{
-      final previousStatistic = getStatistic();
-      final currentStatistic = StatisticModel(
-        loses: _calculateLoses(isWin: isWin, previous: previousStatistic?.loses),
-        wins: _calculateWins(isWin: isWin, previous: previousStatistic?.wins),
-        streak:
-        _calculateStreak(isWin: isWin, previous: previousStatistic?.streak),
-        attempts: _calculateAttempts(
-          attempt: isWin ? attempt - 1 : -2,
-          previous: previousStatistic?.attempts,
-        ),
-      );
-      unawaited(sharedPrefRepository.setStatistic(model: currentStatistic));
-    }catch(e){
-      print("Error in setStatistic : $e");
-      AppConstants.showSnackBar(message: "Error setStatistic");
-    }
 
-  }
-
-  int _calculateLoses({required bool isWin, required int? previous}) {
-    if (isWin) {
-      return previous ?? 0;
-    }
-    if (previous == null) {
-      return 1;
-    }
-    return previous + 1;
-  }
-
-  int _calculateWins({required bool isWin, required int? previous}) {
-    if (!isWin) {
-      return previous ?? 0;
-    }
-    if (previous == null) {
-      return 1;
-    }
-    return previous + 1;
-  }
-
-  int _calculateStreak({required bool isWin, required int? previous}) {
-    if (!isWin) {
-      return 0;
-    }
-    if (previous == null) {
-      return 1;
-    }
-    return previous + 1;
-  }
-
-  List<int> _calculateAttempts({required int attempt, required List<int>? previous,}) {
-    if (attempt == -2) {
-      return previous ?? StatisticModel.zeroAttempts;
-    }
-    if (previous == null) {
-      final currentAttempts = List<int>.of(StatisticModel.zeroAttempts);
-      currentAttempts[attempt+1] += 1;
-      return currentAttempts;
-    }
-    final currentAttempts = List<int>.of(previous);
-    currentAttempts[attempt+1] += 1;
-    return currentAttempts;
-  }
-
-  StatisticModel? getStatistic() {
-    return sharedPrefRepository.getStatistic();
-  }
-
-  void changeTheme({required ThemeMode mode}){
-    try{
-      if(mode == ThemeMode.light){
-        sharedPrefRepository.setTheme(theme: AppConstants.lightTheme);
-      }else if(mode == ThemeMode.dark){
-        sharedPrefRepository.setTheme(theme: AppConstants.darkTheme);
-      }else{
-        unawaited(sharedPrefRepository.removeTheme());
-      }
-      Get.changeThemeMode(mode);
-      themeMode.value=mode;
-    }catch(e){
-      print("Error in ChangeTheme : $e");
-      AppConstants.showSnackBar(message: "Error ChangeTheme");
-    }
-  }
-
-  void getTheme(){
-    var theme = sharedPrefRepository.getTheme();
-    if(theme != null){
-      if(theme == AppConstants.lightTheme){
-        themeMode.value=ThemeMode.light;
-      }else if(theme == AppConstants.darkTheme){
-        themeMode.value=ThemeMode.dark;
-      }
-    }
-  }
-
-  List<WordModel> getLevels(){
-    var levels = sharedPrefRepository.getLevels();
-    if(levels != null){
-      var list = levels.map((str){
-        var decode = jsonDecode(str);
-        return WordModel.fromMap(decode);
-      }).toList();
-
-      return list;
-    }
-    return [];
-  }
 }

@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/MyColors.dart';
-import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/StatisticController.dart';
 import 'package:get/get.dart';
 
 import '../Widgets/HaveNotPlayed.dart';
 
-class StatisticPage extends GetView<MainController> {
+class StatisticPage extends GetView<StatisticController> {
   const StatisticPage({super.key});
 
   @override

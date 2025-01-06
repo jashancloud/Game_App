@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/MyColors.dart';
 import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:game_app/Models/letter_info.dart';
 import 'package:get/get.dart';
 
-class LetterTile extends GetView<MainController> {
+class LetterTile extends GetView<ThemeController> {
   const LetterTile({
 
     this.selected = false,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_app/Constants/AppConstants.dart';
 import 'package:game_app/Controllers/MainController.dart';
+import 'package:game_app/Controllers/ThemeController.dart';
 import 'package:game_app/Models/letter_info.dart';
 import 'package:game_app/Widgets/MyDrawer.dart';
 import 'package:game_app/Widgets/MyGridView.dart';
@@ -56,7 +57,7 @@ class GameBody extends GetView<MainController> {
 
   @override
   Widget build(BuildContext context) {
-
+    var themeController = Get.find<ThemeController>();
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -64,7 +65,7 @@ class GameBody extends GetView<MainController> {
           children: [
             Obx((){
               var meaning = controller.currentWordMeaning.value;
-              var themeMode = controller.themeMode.value;
+              var themeMode = themeController.themeMode.value;
               var cellColor = LetterStatus.notInWord.cellColor(themeMode, context);
               var textColor = LetterStatus.notInWord.textColor(themeMode, context);
               return Container(
